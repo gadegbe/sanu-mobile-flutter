@@ -5,6 +5,7 @@ linter:
 analyzer:
   errors:
     lines_longer_than_80_chars: ignore
+    invalid_annotation_target: ignore
   exclude:
     - "**.freezed.dart"
     - "**.g.dart"

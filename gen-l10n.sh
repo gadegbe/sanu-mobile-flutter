@@ -1,0 +1,2 @@
+flutter pub run arbify:download -s SDlUP8ibd0GhcYfQd41bK1XhZkca2rhIIBrXBIxwjsCmEgRQHjfUn3hXw2JHqbmLPg0a909Aga8E7A96
+flutter gen-l10n

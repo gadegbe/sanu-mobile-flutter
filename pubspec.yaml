@@ -8,25 +8,39 @@ environment:
 
 dependencies:
   bloc: ^8.1.4
+  decimal: ^3.0.2
+  equatable: ^2.0.7
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
   flutter_localizations:
     sdk: flutter
-  freezed_annotation: ^2.4.4
   google_fonts: ^6.2.1
+  hydrated_bloc: ^9.1.5
   intl: ^0.19.0
   json_annotation: ^4.9.0
+  material_symbols_icons: ^4.2801.1
+  meta: ^1.15.0
+  package_info_plus: ^8.1.4
+  path_provider: ^2.1.5
+  url_launcher: ^6.3.1
+  uuid: ^4.5.1
 
 dev_dependencies:
+  arbify:
+    path: ../../cofinger/arbify_flutter
   bloc_test: ^9.1.7
   build_runner: ^2.4.14
   flutter_test:
     sdk: flutter
-  freezed: ^3.0.0-0.0.dev
   json_serializable: ^6.9.3
   mocktail: ^1.0.4
   very_good_analysis: ^6.0.0
+
+arbify:
+  url: http://localhost:8444
+  project_id: 5
+  output_dir: lib/l10n/arb
 
 flutter:
   uses-material-design: true

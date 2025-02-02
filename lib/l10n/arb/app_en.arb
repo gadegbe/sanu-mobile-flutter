@@ -1,7 +1,30 @@
 {
     "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
+    "@@last_modified": "2025-02-02T14:48:57+00:00",
+    "dashboardTitle": "Dashboard",
+    "categoriesTitle": "Categories",
+    "itemsTitle": "Items",
+    "stocksTitle": "Stocks",
+    "name": "Name",
+    "description": "Description",
+    "actions": "Actions",
+    "deleteConfirmationTitle": "Are you sure you want to delete this?",
+    "deleteConfirmationDescription": "This action cannot be undone. Do you want to proceed?",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "localeFr": "Français",
+    "localeEn": "English",
+    "themeSystem": "System",
+    "themeDark": "Dark",
+    "themeLight": "Light",
+    "appearance": "Appearance",
+    "settingsTitle": "Settings",
+    "localeChange": "Language",
+    "about": "About",
+    "privacyPolicy": "Privacy Policy",
+    "category": "Category",
+    "noneEmptyField": "This field can't be empty",
+    "save": "Save",
+    "noValidField": "Value is not valid",
+    "price": "Price"
 }
