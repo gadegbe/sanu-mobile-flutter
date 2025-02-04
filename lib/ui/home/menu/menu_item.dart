@@ -4,7 +4,7 @@ import 'package:sanu/l10n/l10n.dart';
 import 'package:sanu/ui/category/pages/categories_page.dart';
 import 'package:sanu/ui/dashboard/pages/dashboard_page.dart';
 import 'package:sanu/ui/item/pages/items_page.dart';
-import 'package:sanu/ui/settings/views/settings_page.dart';
+import 'package:sanu/ui/settings/pages/settings_page.dart';
 import 'package:sanu/ui/stock/pages/stocks_page.dart';
 
 enum MenuItem {

@@ -34,11 +34,11 @@ class _ItemUpdateWidgetState extends State<ItemUpdateWidget> {
   void initState() {
     if (widget.id != null) {
       item = context.read<ItemCubit>().state.items[widget.id!];
+      category = context.read<CategoryCubit>().state.categories[item?.categoryId];
       if (item != null) {
         _nameController.text = item!.name;
         _descriptionController.text = item!.description;
         _priceController.text = item!.price.toString();
-        category = item!.category;
       }
     }
     super.initState();

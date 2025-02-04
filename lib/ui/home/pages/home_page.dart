@@ -17,7 +17,6 @@ class _HomePageState extends State<HomePage> {
     MenuItem.dashboard,
     MenuItem.categories,
     MenuItem.items,
-    MenuItem.stocks,
     MenuItem.settings,
   ];
   @override

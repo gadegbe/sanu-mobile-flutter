@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:sanu/l10n/l10n.dart';
+import 'package:sanu/ui/item/cubit/item_cubit.dart';
 import 'package:sanu/ui/stock/cubit/stock_cubit.dart';
 import 'package:sanu/ui/stock/cubit/stock_state.dart';
 
@@ -48,6 +50,30 @@ class StocksPage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  ...state.stocks.values
+                      .map(
+                        (stock) {
+                          final item = context.read<ItemCubit>().state.items[stock.itemId];
+                          if (item == null) return null;
+
+                          return TableRow(
+                            children: [
+                              Text(item.name),
+                              Text(stock.quantity.toString()),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Symbols.visibility),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      )
+                      .where((element) => element != null)
+                      .cast<TableRow>(),
                 ],
               );
             },

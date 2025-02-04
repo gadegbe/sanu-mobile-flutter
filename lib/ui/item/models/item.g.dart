@@ -12,7 +12,9 @@ Item _$ItemFromJson(Map<String, dynamic> json) => Item(
       image: json['image'] as String,
       description: json['description'] as String,
       price: Decimal.fromJson(json['price'] as String),
-      category: ItemCategory.fromJson(json['category'] as Map<String, dynamic>),
+      categoryId: json['categoryId'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
@@ -21,5 +23,7 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'image': instance.image,
       'description': instance.description,
       'price': instance.price,
-      'category': instance.category,
+      'categoryId': instance.categoryId,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
     };

@@ -17,13 +17,16 @@ class ItemCubit extends HydratedCubit<ItemState> {
     String? id,
   }) {
     final itemId = id ?? const Uuid().v4();
+    final createdAt = state.items[itemId]?.createdAt ?? DateTime.now();
     final item = Item(
       id: itemId,
       name: name,
       description: description,
       price: price,
-      category: category,
+      categoryId: category.id,
       image: image ?? 'https://placehold.co/400',
+      createdAt: createdAt,
+      updatedAt: DateTime.now(),
     );
     final updatedItems = Map<String, Item>.from(state.items)..[item.id] = item;
     emit(state.copyWith(items: updatedItems));

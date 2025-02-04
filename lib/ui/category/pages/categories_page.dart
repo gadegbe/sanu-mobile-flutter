@@ -36,10 +36,13 @@ class CategoriesPage extends StatelessWidget {
           BlocBuilder<CategoryCubit, CategoryState>(
             builder: (context, state) {
               return Table(
+                border: TableBorder.all(
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
+                ),
                 columnWidths: const {
-                  0: FlexColumnWidth(),
+                  0: IntrinsicColumnWidth(),
                   1: FlexColumnWidth(),
-                  2: FlexColumnWidth(),
+                  2: IntrinsicColumnWidth(),
                 },
                 children: [
                   TableRow(
@@ -56,7 +59,7 @@ class CategoriesPage extends StatelessWidget {
                         context.l10n.actions,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                    ],
+                    ].map((e) => Padding(padding: const EdgeInsets.all(8), child: e)).toList(),
                   ),
                   ...state.categories.values.map(
                     (category) => TableRow(
@@ -85,7 +88,17 @@ class CategoriesPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ],
+                      ]
+                          .map(
+                            (e) => TableCell(
+                              verticalAlignment: TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                child: e,
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                 ],

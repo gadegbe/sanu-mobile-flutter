@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:sanu/ui/settings/models/item_currency.dart';
 
 part 'settings_state.dart';
 
@@ -19,6 +20,10 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
 
   void changeLocale(Locale locale) {
     emit(state.copyWith(locale: locale));
+  }
+
+  void changeCurrency(ItemCurrency currency) {
+    emit(state.copyWith(currency: currency));
   }
 
   bool get isDarkMode {

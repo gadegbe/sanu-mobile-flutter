@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2025-02-02T14:48:57+00:00",
+    "@@last_modified": "2025-02-03T09:06:48+00:00",
     "dashboardTitle": "Dashboard",
     "categoriesTitle": "Categories",
     "itemsTitle": "Items",
@@ -26,5 +26,11 @@
     "noneEmptyField": "This field can't be empty",
     "save": "Save",
     "noValidField": "Value is not valid",
-    "price": "Price"
+    "price": "Price",
+    "numberOfItems": "{count, plural, zero{No item} one{{count} item} other{{count} items}}",
+    "numberOfStocks": "{count, plural, zero{Out of stock} one{{count} in stock} other{{count} in stock}}",
+    "transactionAddMode": "Add",
+    "transactionRemoveMode": "Remove",
+    "checkout": "Checkout",
+    "total": "Total"
 }

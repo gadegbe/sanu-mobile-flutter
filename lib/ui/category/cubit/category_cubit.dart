@@ -17,11 +17,14 @@ class CategoryCubit extends HydratedCubit<CategoryState> {
     String? image,
   }) {
     final categoryId = id ?? const Uuid().v4();
+    final createdAt = state.categories[categoryId]?.createdAt ?? DateTime.now();
     final category = ItemCategory(
       id: categoryId,
       name: name,
       description: description,
       image: image ?? 'https://placehold.co/400',
+      createdAt: createdAt,
+      updatedAt: DateTime.now(),
     );
     final updatedCategories = Map<String, ItemCategory>.from(state.categories)..[category.id] = category;
     emit(state.copyWith(categories: updatedCategories));

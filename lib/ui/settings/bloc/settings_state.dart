@@ -9,30 +9,34 @@ class SettingsState extends Equatable {
       Locale('en'),
       Locale('fr'),
     ],
+    this.currency = ItemCurrency.defaultCurrency,
   });
 
   factory SettingsState.fromJson(Map<String, dynamic> map) {
     return SettingsState(
       themeMode: themeFromRawValue(map['themeMode'] as String),
       locale: Locale(map['locale'] as String),
+      currency: ItemCurrency.fromJson(map['currency'] as Map<String, dynamic>),
     );
   }
 
   final ThemeMode themeMode;
   final Locale locale;
-
+  final ItemCurrency currency;
   final List<Locale> locales;
 
   @override
   List<Object?> get props => [
         themeMode,
         locale,
+        currency,
       ];
 
   Map<String, dynamic> toJson() {
     return {
       'themeMode': themeMode.name,
       'locale': locale.languageCode,
+      'currency': currency.toJson(),
     };
   }
 
@@ -51,10 +55,12 @@ class SettingsState extends Equatable {
   SettingsState copyWith({
     ThemeMode? themeMode,
     Locale? locale,
+    ItemCurrency? currency,
   }) {
     return SettingsState(
       themeMode: themeMode ?? this.themeMode,
       locale: locale ?? this.locale,
+      currency: currency ?? this.currency,
     );
   }
 }

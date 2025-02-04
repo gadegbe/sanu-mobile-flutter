@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sanu/ui/cart/cubit/transaction_cubit.dart';
+import 'package:sanu/ui/category/cubit/category_cubit.dart';
+import 'package:sanu/ui/category/cubit/category_state.dart';
+import 'package:sanu/ui/category/models/item_category.dart';
 import 'package:sanu/ui/category/widgets/category_selector_widget.dart';
 
 class CategoriesSelectorWidget extends StatelessWidget {
@@ -6,14 +11,26 @@ class CategoriesSelectorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 10,
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      itemBuilder: (context, index) {
-        return InkWell(
-          onTap: () {},
-          child: const CategorySelectorWidget(),
+    return BlocSelector<TransactionCubit, TransactionState, ItemCategory?>(
+      selector: (state) => state.selectedCategory,
+      builder: (context, selectedCategory) {
+        return BlocBuilder<CategoryCubit, CategoryState>(
+          builder: (context, state) {
+            return ListView.builder(
+              itemCount: state.categories.values.length,
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              itemBuilder: (context, index) {
+                final category = state.categories.values.elementAt(index);
+                return InkWell(
+                  onTap: () {
+                    context.read<TransactionCubit>().selectCategory(selectedCategory != category ? category : null);
+                  },
+                  child: CategorySelectorWidget(category: category),
+                );
+              },
+            );
+          },
         );
       },
     );

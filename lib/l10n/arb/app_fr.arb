@@ -1,6 +1,6 @@
 {
     "@@locale": "fr",
-    "@@last_modified": "2025-02-02T14:48:55+00:00",
+    "@@last_modified": "2025-02-03T09:06:43+00:00",
     "dashboardTitle": "Accueil",
     "categoriesTitle": "Catégories",
     "itemsTitle": "Produits",
@@ -26,5 +26,11 @@
     "noneEmptyField": "Ce champ ne peut être vide",
     "save": "Enregistrer",
     "noValidField": "Cette valeur n'est pas valide",
-    "price": "Prix"
+    "price": "Prix",
+    "numberOfItems": "{count, plural, zero{Pas de produit} one{{count} produit} other{{count} produits}}",
+    "numberOfStocks": "{count, plural, zero{Stock vide} one{{count} en stock} other{{count} en stock}}",
+    "transactionAddMode": "Ajout",
+    "transactionRemoveMode": "Retrait ",
+    "checkout": "Checkout",
+    "total": "Total"
 }

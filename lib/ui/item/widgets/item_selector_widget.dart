@@ -1,38 +1,113 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sanu/l10n/l10n.dart';
+import 'package:sanu/ui/cart/cubit/transaction_cubit.dart';
+import 'package:sanu/ui/cart/models/item_transaction.dart';
+import 'package:sanu/ui/category/cubit/category_cubit.dart';
+import 'package:sanu/ui/category/cubit/category_state.dart';
+import 'package:sanu/ui/core/extensions/decimal_extension.dart';
+import 'package:sanu/ui/core/extensions/list_extension.dart';
+import 'package:sanu/ui/item/models/item.dart';
+import 'package:sanu/ui/item/utils/items_utils.dart';
 
-class ItemSelectorWidget extends StatelessWidget {
-  const ItemSelectorWidget({super.key});
+class ItemSelectorWidget extends StatefulWidget {
+  const ItemSelectorWidget({
+    required this.item,
+    super.key,
+  });
+
+  final Item item;
+
+  @override
+  State<ItemSelectorWidget> createState() => _ItemSelectorWidgetState();
+}
+
+class _ItemSelectorWidgetState extends State<ItemSelectorWidget> {
+  final quantityNotifier = ValueNotifier(Decimal.zero);
+  Decimal maxQuantity = Decimal.zero;
+
+  @override
+  void initState() {
+    maxQuantity = ItemsUtils.itemsInStock(context, itemId: widget.item.id);
+    final quantity = context.read<TransactionCubit>().state.transactions[widget.item.id]?.quantity;
+    if (quantity != null) {
+      quantityNotifier.value = quantity;
+    }
+    _updateTransaction();
+    quantityNotifier.addListener(_updateTransaction);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Item'),
-          const SizedBox(height: 8),
-          const Text('100'),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.remove),
-                onPressed: () {},
+    return BlocBuilder<CategoryCubit, CategoryState>(
+      builder: (context, categoryState) {
+        final category = categoryState.categories[widget.item.categoryId];
+        return BlocBuilder<TransactionCubit, TransactionState>(
+          builder: (context, state) {
+            final stocks = ItemsUtils.itemsInStock(context, itemId: widget.item.id);
+            final isRemove = state.type == ItemTransactionType.remove;
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.item.name),
+                  Text(widget.item.price.toCurrencyFormat(context)),
+                  if (category != null) Text(category.name),
+                  const Spacer(),
+                  if (isRemove) Text(context.l10n.numberOfStocks(stocks.toDouble())),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () {
+                          quantityNotifier.value = quantityNotifier.value > Decimal.zero
+                              ? quantityNotifier.value - Decimal.one
+                              : Decimal.zero;
+                        },
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: quantityNotifier,
+                        builder: (context, quantity, _) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Text(quantity.toString()),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {
+                          setState(() {
+                            if (isRemove) {
+                              quantityNotifier.value = quantityNotifier.value < maxQuantity
+                                  ? quantityNotifier.value + Decimal.one
+                                  : maxQuantity;
+                            } else {
+                              quantityNotifier.value = quantityNotifier.value + Decimal.one;
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ].separated(separator: const SizedBox(height: 2)),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Text('1'),
-              ),
-              IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () {},
-              ),
-            ],
-          ),
-        ],
-      ),
+            );
+          },
+        );
+      },
     );
+  }
+
+  void _updateTransaction() {
+    final quantity = quantityNotifier.value;
+    context.read<TransactionCubit>().upsertTransaction(
+          itemId: widget.item.id,
+          quantity: quantity,
+        );
   }
 }

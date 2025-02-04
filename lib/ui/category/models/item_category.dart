@@ -1,15 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:sanu/ui/core/models/model.dart';
 
 part 'item_category.g.dart';
 
 @JsonSerializable()
-class ItemCategory extends Equatable {
+class ItemCategory extends Equatable implements Model {
   const ItemCategory({
     required this.id,
     required this.name,
     required this.image,
     required this.description,
+    required this.createdAt,
+    required this.updatedAt,
   });
   factory ItemCategory.fromJson(Map<String, dynamic> json) => _$ItemCategoryFromJson(json);
 
@@ -19,20 +22,10 @@ class ItemCategory extends Equatable {
   final String name;
   final String image;
   final String description;
-
-  ItemCategory copyWith({
-    String? id,
-    String? name,
-    String? image,
-    String? description,
-  }) {
-    return ItemCategory(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      image: image ?? this.image,
-      description: description ?? this.description,
-    );
-  }
+  @override
+  final DateTime createdAt;
+  @override
+  final DateTime updatedAt;
 
   @override
   List<Object> get props => [id, name, image, description];

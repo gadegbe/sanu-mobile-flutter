@@ -5,6 +5,8 @@ import 'package:sanu/ui/core/extensions/locale_extensions.dart';
 import 'package:sanu/ui/core/extensions/object_extension.dart';
 import 'package:sanu/ui/core/extensions/theme_mode_extension.dart';
 import 'package:sanu/ui/settings/bloc/settings_cubit.dart';
+import 'package:sanu/ui/settings/models/currencies.dart';
+import 'package:sanu/ui/settings/models/item_currency.dart';
 import 'package:sanu/ui/settings/widgets/contact_widget.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -65,6 +67,23 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: Text(
                           value.title(context),
                         ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Currency'),
+                  DropdownButtonFormField(
+                    value: state.currency,
+                    isExpanded: true,
+                    onChanged: (value) {
+                      if (value != null) {
+                        context.read<SettingsCubit>().changeCurrency(value);
+                      }
+                    },
+                    items: currencies.map((ItemCurrency value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text('${value.code} - ${value.name}'),
                       );
                     }).toList(),
                   ),
