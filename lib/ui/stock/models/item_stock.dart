@@ -1,10 +1,11 @@
 import 'package:decimal/decimal.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'item_stock.g.dart';
 
 @JsonSerializable()
-class ItemStock {
+class ItemStock extends Equatable {
   const ItemStock({
     required this.itemId,
     required this.quantity,
@@ -16,4 +17,7 @@ class ItemStock {
 
   final String itemId;
   final Decimal quantity;
+
+  @override
+  List<Object?> get props => [itemId, quantity];
 }

@@ -9,6 +9,8 @@ import 'package:sanu/ui/stock/cubit/stock_state.dart';
 class StocksPage extends StatelessWidget {
   const StocksPage({super.key});
 
+  static String name = 'stocks';
+
   @override
   Widget build(BuildContext context) {
     return Padding(

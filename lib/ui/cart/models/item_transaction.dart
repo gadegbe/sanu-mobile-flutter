@@ -1,11 +1,12 @@
 import 'package:decimal/decimal.dart';
+import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter/material.dart' hide Column, Table;
 import 'package:sanu/l10n/l10n.dart';
+import 'package:sanu/ui/core/databases/database.dart';
+import 'package:sanu/ui/core/databases/mixins/table_mixin.dart';
 import 'package:sanu/ui/core/models/model.dart';
-
-part 'item_transaction.g.dart';
+import 'package:sanu/ui/item/models/item.dart';
 
 enum ItemTransactionType {
   add,
@@ -21,7 +22,14 @@ enum ItemTransactionType {
   }
 }
 
-@JsonSerializable()
+class ItemTransactionTable extends Table with TableMixin {
+  late final type = textEnum<ItemTransactionType>()();
+  late final quantity = text().named('price')();
+  late final item = text().references(ItemTable, #id)();
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 class ItemTransaction extends Equatable implements Model {
   const ItemTransaction({
     required this.createdAt,
@@ -31,9 +39,15 @@ class ItemTransaction extends Equatable implements Model {
     required this.type,
   });
 
-  factory ItemTransaction.fromJson(Map<String, dynamic> json) => _$ItemTransactionFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ItemTransactionToJson(this);
+  factory ItemTransaction.fromData(ItemTransactionTableData data) {
+    return ItemTransaction(
+      itemId: data.item,
+      quantity: Decimal.parse(data.quantity),
+      type: data.type,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+    );
+  }
 
   final String itemId;
   final Decimal quantity;
@@ -47,5 +61,7 @@ class ItemTransaction extends Equatable implements Model {
         itemId,
         quantity,
         type,
+        createdAt,
+        updatedAt,
       ];
 }

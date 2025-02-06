@@ -1,10 +1,17 @@
+import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:sanu/ui/core/databases/database.dart';
+import 'package:sanu/ui/core/databases/mixins/table_mixin.dart';
 import 'package:sanu/ui/core/models/model.dart';
 
-part 'item_category.g.dart';
+class ItemCategoryTable extends Table with TableMixin {
+  late final name = text()();
+  late final description = text()();
+  late final image = text()();
+  @override
+  Set<Column> get primaryKey => {id};
+}
 
-@JsonSerializable()
 class ItemCategory extends Equatable implements Model {
   const ItemCategory({
     required this.id,
@@ -14,9 +21,17 @@ class ItemCategory extends Equatable implements Model {
     required this.createdAt,
     required this.updatedAt,
   });
-  factory ItemCategory.fromJson(Map<String, dynamic> json) => _$ItemCategoryFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ItemCategoryToJson(this);
+  factory ItemCategory.fromData(ItemCategoryTableData data) {
+    return ItemCategory(
+      id: data.id,
+      name: data.name,
+      image: data.image,
+      description: data.description,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+    );
+  }
 
   final String id;
   final String name;
@@ -28,5 +43,12 @@ class ItemCategory extends Equatable implements Model {
   final DateTime updatedAt;
 
   @override
-  List<Object> get props => [id, name, image, description];
+  List<Object> get props => [
+        id,
+        name,
+        image,
+        description,
+        createdAt,
+        updatedAt,
+      ];
 }

@@ -22,7 +22,7 @@ class CategorySelectorWidget extends StatelessWidget {
         return Card(
           color: isSelected ? Theme.of(context).colorScheme.secondaryContainer : null,
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.1,
+            width: 160,
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,6 +34,8 @@ class CategorySelectorWidget extends StatelessWidget {
                 const Spacer(),
                 Text(
                   category.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium

@@ -45,18 +45,18 @@ enum MenuItem {
     }
   }
 
-  Widget builder(BuildContext context) {
+  String routeName() {
     switch (this) {
       case MenuItem.dashboard:
-        return const DashboardPage();
+        return DashboardPage.name;
       case MenuItem.categories:
-        return const CategoriesPage();
+        return CategoriesPage.name;
       case MenuItem.items:
-        return const ItemsPage();
+        return ItemsPage.name;
       case MenuItem.stocks:
-        return const StocksPage();
+        return StocksPage.name;
       case MenuItem.settings:
-        return const SettingsPage();
+        return SettingsPage.name;
     }
   }
 }

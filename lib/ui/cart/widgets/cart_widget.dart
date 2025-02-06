@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanu/l10n/l10n.dart';
 import 'package:sanu/ui/cart/cubit/transaction_cubit.dart';
-import 'package:sanu/ui/cart/models/item_transaction.dart';
 import 'package:sanu/ui/cart/utils/transactions_utils.dart';
+import 'package:sanu/ui/cart/widgets/transaction_type_switcher_widget.dart';
 import 'package:sanu/ui/core/extensions/decimal_extension.dart';
 import 'package:sanu/ui/item/cubit/item_cubit.dart';
 import 'package:sanu/ui/stock/cubit/stock_cubit.dart';
@@ -36,41 +36,24 @@ class CartWidget extends StatelessWidget {
                 },
               ),
             ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    ListTile(
-                      title: Text(context.l10n.total),
-                      trailing: Text(total.toCurrencyFormat(context)),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(ItemTransactionType.remove.title(context)),
-                        const SizedBox(width: 8),
-                        Switch(
-                          value: context.read<TransactionCubit>().state.type == ItemTransactionType.add,
-                          onChanged: (_) {
-                            context.read<TransactionCubit>().switchTransactionType();
-                          },
-                        ),
-                        const SizedBox(width: 8),
-                        Text(ItemTransactionType.add.title(context)),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<StockCubit>().commit(state.transactions.values.toList());
-                        context.read<TransactionCubit>().reset();
-                      },
-                      child: Text(context.l10n.checkout),
-                    ),
-                  ],
-                ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  ListTile(
+                    title: Text(context.l10n.total),
+                    trailing: Text(total.toCurrencyFormat(context)),
+                  ),
+                  const TransactionTypeSwitcherWidget(),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<StockCubit>().commit(state.transactions.values.toList());
+                      context.read<TransactionCubit>().reset();
+                    },
+                    child: Text(context.l10n.checkout),
+                  ),
+                ],
               ),
             ),
           ],

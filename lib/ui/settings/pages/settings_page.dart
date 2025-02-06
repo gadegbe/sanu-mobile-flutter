@@ -12,7 +12,7 @@ import 'package:sanu/ui/settings/widgets/contact_widget.dart';
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
-  static const route = 'settings';
+  static const name = 'settings';
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();

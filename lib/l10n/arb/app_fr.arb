@@ -1,6 +1,6 @@
 {
     "@@locale": "fr",
-    "@@last_modified": "2025-02-03T09:06:43+00:00",
+    "@@last_modified": "2025-02-04T14:32:59+00:00",
     "dashboardTitle": "Accueil",
     "categoriesTitle": "Catégories",
     "itemsTitle": "Produits",
@@ -32,5 +32,6 @@
     "transactionAddMode": "Ajout",
     "transactionRemoveMode": "Retrait ",
     "checkout": "Checkout",
-    "total": "Total"
+    "total": "Total",
+    "stocksMove": "Mouvement de stocks"
 }

@@ -1,19 +1,27 @@
 import 'package:decimal/decimal.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:sanu/ui/cart/models/item_transaction.dart';
+import 'package:sanu/ui/core/databases/database.dart';
 import 'package:sanu/ui/stock/cubit/stock_state.dart';
 import 'package:sanu/ui/stock/models/item_stock.dart';
+import 'package:uuid/uuid.dart';
 
-class StockCubit extends HydratedCubit<StockState> {
-  StockCubit() : super(const StockState());
+class StockCubit extends Cubit<StockState> {
+  StockCubit({required this.database}) : super(const StockState()) {
+    load();
+  }
 
-  void commit(List<ItemTransaction> transactions) {
-    final updatedTransactions = [
-      ...state.transactions,
-      ...transactions,
-    ];
+  final AppDatabase database;
 
-    final stocks = updatedTransactions.fold<Map<String, ItemStock>>(
+  Future<void> load() async {
+    final transactions = await database.select(database.itemTransactionTable).get();
+    final transactionsList = transactions.map(ItemTransaction.fromData).toList();
+    emit(state.copyWith(transactions: transactionsList));
+    refreshStocks();
+  }
+
+  void refreshStocks() {
+    final stocks = state.transactions.fold<Map<String, ItemStock>>(
       {},
       (items, transaction) {
         final quantity = items[transaction.itemId]?.quantity ?? Decimal.zero;
@@ -34,15 +42,27 @@ class StockCubit extends HydratedCubit<StockState> {
 
     emit(
       state.copyWith(
-        transactions: updatedTransactions,
         stocks: stocks,
       ),
     );
   }
 
-  @override
-  StockState? fromJson(Map<String, dynamic> json) => StockState.fromJson(json);
+  Future<void> commit(List<ItemTransaction> transactions) async {
+    await Future.wait(
+      transactions.map((transaction) async {
+        return database.into(database.itemTransactionTable).insert(
+              ItemTransactionTableData(
+                id: const Uuid().v4(),
+                item: transaction.itemId,
+                quantity: transaction.quantity.toString(),
+                type: transaction.type,
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
+              ),
+            );
+      }),
+    );
 
-  @override
-  Map<String, dynamic>? toJson(StockState state) => state.toJson();
+    await load();
+  }
 }

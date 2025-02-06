@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "@@last_modified": "2025-02-03T09:06:48+00:00",
+    "@@last_modified": "2025-02-04T14:33:08+00:00",
     "dashboardTitle": "Dashboard",
     "categoriesTitle": "Categories",
     "itemsTitle": "Items",
@@ -32,5 +32,6 @@
     "transactionAddMode": "Add",
     "transactionRemoveMode": "Remove",
     "checkout": "Checkout",
-    "total": "Total"
+    "total": "Total",
+    "stocksMove": "Stocks changes"
 }
