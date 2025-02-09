@@ -18,6 +18,7 @@ class CategorySelectorWidget extends StatelessWidget {
     return BlocBuilder<TransactionCubit, TransactionState>(
       builder: (context, state) {
         final items = CategoriesUtils.numberOfItems(context, categoryId: category.id);
+        if (items < 1) return const SizedBox.shrink();
         final isSelected = state.selectedCategory?.id == category.id;
         return Card(
           color: isSelected ? Theme.of(context).colorScheme.secondaryContainer : null,

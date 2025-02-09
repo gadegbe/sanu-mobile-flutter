@@ -19,6 +19,7 @@ class CategoryCubit extends Cubit<CategoryState> {
       categoriesMap[category.id] = ItemCategory.fromData(category);
     }
     emit(state.copyWith(categories: categoriesMap));
+    filterCategories();
   }
 
   ItemCategory? readCategory(String id) {
@@ -46,6 +47,19 @@ class CategoryCubit extends Cubit<CategoryState> {
         );
 
     await load();
+  }
+
+  void filterCategories({String? filter}) {
+    final filteredCategories = (filter == null || filter.isEmpty
+            ? state.categories.values
+            : state.categories.values.where((category) {
+                final nameMatch = category.name.toLowerCase().contains(filter.toLowerCase());
+                final descriptionMatch = category.description.toLowerCase().contains(filter.toLowerCase());
+                return nameMatch || descriptionMatch;
+              }))
+        .toList();
+
+    emit(state.copyWith(filteredCategories: filteredCategories));
   }
 
   Future<void> deleteCategory(String id) async {

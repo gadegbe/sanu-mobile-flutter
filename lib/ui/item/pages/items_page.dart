@@ -10,6 +10,7 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:sanu/l10n/l10n.dart';
 import 'package:sanu/ui/category/cubit/category_cubit.dart';
 import 'package:sanu/ui/core/extensions/context_extension.dart';
+import 'package:sanu/ui/core/extensions/context_layout_extension.dart';
 import 'package:sanu/ui/core/extensions/decimal_extension.dart';
 import 'package:sanu/ui/core/utils/crud_utils.dart';
 import 'package:sanu/ui/item/cubit/item_cubit.dart';
@@ -19,10 +20,23 @@ import 'package:sanu/ui/item/widgets/item_update_widget.dart';
 import 'package:sanu/ui/stock/cubit/stock_cubit.dart';
 import 'package:sanu/ui/stock/cubit/stock_state.dart';
 
-class ItemsPage extends StatelessWidget {
+class ItemsPage extends StatefulWidget {
   const ItemsPage({super.key});
 
   static String name = 'items';
+
+  @override
+  State<ItemsPage> createState() => _ItemsPageState();
+}
+
+class _ItemsPageState extends State<ItemsPage> {
+  final searchController = TextEditingController();
+
+  @override
+  void initState() {
+    searchController.addListener(() => _filter(context));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +46,21 @@ class ItemsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                prefixIcon: const Icon(Symbols.search),
+                suffixIcon: GestureDetector(
+                  onTap: searchController.clear,
+                  child: const Icon(Symbols.clear),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Text(
@@ -77,14 +106,20 @@ class ItemsPage extends StatelessWidget {
                       border: TableBorder.all(
                         color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
                       ),
-                      columnWidths: const {
-                        0: IntrinsicColumnWidth(),
-                        1: FlexColumnWidth(),
-                        2: IntrinsicColumnWidth(),
-                        3: IntrinsicColumnWidth(),
-                        4: IntrinsicColumnWidth(),
-                        5: IntrinsicColumnWidth(),
-                      },
+                      columnWidths: context.showFullTable
+                          ? const {
+                              0: IntrinsicColumnWidth(),
+                              1: FlexColumnWidth(),
+                              2: IntrinsicColumnWidth(),
+                              3: IntrinsicColumnWidth(),
+                              4: IntrinsicColumnWidth(),
+                              5: IntrinsicColumnWidth(),
+                            }
+                          : const {
+                              0: FlexColumnWidth(),
+                              1: IntrinsicColumnWidth(),
+                              2: IntrinsicColumnWidth(),
+                            },
                       children: [
                         TableRow(
                           children: [
@@ -92,18 +127,20 @@ class ItemsPage extends StatelessWidget {
                               context.l10n.name,
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            Text(
-                              context.l10n.description,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Text(
-                              context.l10n.category,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Text(
-                              context.l10n.price,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
+                            if (context.showFullTable) ...[
+                              Text(
+                                context.l10n.description,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              Text(
+                                context.l10n.category,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              Text(
+                                context.l10n.price,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ],
                             Text(
                               context.l10n.stocksTitle,
                               style: Theme.of(context).textTheme.titleMedium,
@@ -114,17 +151,23 @@ class ItemsPage extends StatelessWidget {
                             ),
                           ].map((e) => Padding(padding: const EdgeInsets.all(8), child: e)).toList(),
                         ),
-                        ...state.items.values.map((item) {
+                        ...state.filteredItems.map((item) {
                           final category = context.read<CategoryCubit>().state.categories[item.categoryId];
                           return TableRow(
                             children: [
-                              Text(item.name),
-                              Text(item.description),
-                              Text(category?.name ?? ''),
                               Text(
-                                item.price.toCurrencyFormat(context),
-                                textAlign: TextAlign.right,
+                                item.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
+                              if (context.showFullTable) ...[
+                                Text(item.description),
+                                Text(category?.name ?? ''),
+                                Text(
+                                  item.price.toCurrencyFormat(context),
+                                  textAlign: TextAlign.right,
+                                ),
+                              ],
                               Text(
                                 stockState.stocks[item.id]?.quantity.toString() ?? '0',
                                 textAlign: TextAlign.right,
@@ -222,5 +265,10 @@ class ItemsPage extends StatelessWidget {
       ext: 'csv',
       mimeType: MimeType.csv,
     );
+  }
+
+  void _filter(BuildContext context) {
+    final query = searchController.text.toLowerCase();
+    context.read<ItemCubit>().filterItems(filter: query);
   }
 }

@@ -6,4 +6,5 @@ extension LayoutBuildContext on BuildContext {
   int get crossAxisCount => ((mediaQuery.size.width - (showCartWidget ? 300 : 0)) / 220).floor();
   bool get showNavigationRail => mediaQuery.size.width > 400;
   bool get isGridView => crossAxisCount > 2;
+  bool get showFullTable => mediaQuery.size.width >= 960;
 }

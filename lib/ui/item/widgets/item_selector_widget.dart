@@ -1,11 +1,11 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sanu/l10n/l10n.dart';
 import 'package:sanu/ui/cart/cubit/transaction_cubit.dart';
 import 'package:sanu/ui/cart/models/item_transaction.dart';
 import 'package:sanu/ui/category/cubit/category_cubit.dart';
 import 'package:sanu/ui/category/cubit/category_state.dart';
+import 'package:sanu/ui/core/extensions/context_extension.dart';
 import 'package:sanu/ui/core/extensions/decimal_extension.dart';
 import 'package:sanu/ui/core/extensions/list_extension.dart';
 import 'package:sanu/ui/item/models/item.dart';
@@ -48,6 +48,7 @@ class _ItemSelectorWidgetState extends State<ItemSelectorWidget> {
           builder: (context, state) {
             final stocks = ItemsUtils.itemsInStock(context, itemId: widget.item.id);
             final isRemove = state.type == ItemTransactionType.remove;
+            final isOutOfStocks = stocks == Decimal.zero;
             return Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -57,10 +58,22 @@ class _ItemSelectorWidgetState extends State<ItemSelectorWidget> {
                   Text(widget.item.price.toCurrencyFormat(context)),
                   if (category != null) Text(category.name),
                   const Spacer(),
-                  if (isRemove) Text(context.l10n.numberOfStocks(stocks.toDouble())),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: isOutOfStocks ? context.colorScheme.error : Colors.green,
+                          shape: BoxShape.circle,
+                        ),
+                        width: 8,
+                        height: 8,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        stocks.toString(),
+                        style: const TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                      const Spacer(),
                       IconButton(
                         icon: const Icon(Icons.remove),
                         onPressed: () {
@@ -74,7 +87,10 @@ class _ItemSelectorWidgetState extends State<ItemSelectorWidget> {
                         builder: (context, quantity, _) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Text(quantity.toString()),
+                            child: Text(
+                              quantity.toString(),
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           );
                         },
                       ),

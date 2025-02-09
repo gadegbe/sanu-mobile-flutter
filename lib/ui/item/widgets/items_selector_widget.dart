@@ -23,13 +23,14 @@ class ItemsSelectorWidget extends StatelessWidget {
 
             return BlocBuilder<ItemCubit, ItemState>(
               builder: (context, state) {
-                final items = state.items.values
+                final items = state.filteredItems
                     .where((element) => category == null || element.categoryId == category.id)
                     .toList();
                 if (context.isGridView) {
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: context.crossAxisCount,
+                      childAspectRatio: 1.3,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
                     ),

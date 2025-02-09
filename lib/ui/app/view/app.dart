@@ -21,14 +21,18 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = createTextTheme(context, 'Poppins', 'Poppins');
     final theme = MaterialTheme(textTheme);
+    final categoryCubit = CategoryCubit(database: database);
 
     return MultiProvider(
       providers: [
         BlocProvider(
-          create: (context) => CategoryCubit(database: database),
+          create: (context) => categoryCubit,
         ),
         BlocProvider(
-          create: (context) => ItemCubit(database: database),
+          create: (context) => ItemCubit(
+            database: database,
+            categoryCubit: categoryCubit,
+          ),
         ),
         BlocProvider(
           create: (context) => TransactionCubit(),

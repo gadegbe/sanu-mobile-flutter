@@ -17,11 +17,11 @@ class CategoriesSelectorWidget extends StatelessWidget {
         return BlocBuilder<CategoryCubit, CategoryState>(
           builder: (context, state) {
             return ListView.builder(
-              itemCount: state.categories.values.length,
+              itemCount: state.filteredCategories.length,
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               itemBuilder: (context, index) {
-                final category = state.categories.values.elementAt(index);
+                final category = state.filteredCategories.elementAt(index);
                 return InkWell(
                   onTap: () {
                     context.read<TransactionCubit>().selectCategory(selectedCategory != category ? category : null);

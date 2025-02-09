@@ -5,6 +5,7 @@ import 'package:sanu/ui/cart/cubit/transaction_cubit.dart';
 import 'package:sanu/ui/cart/models/item_transaction.dart';
 import 'package:sanu/ui/category/cubit/category_cubit.dart';
 import 'package:sanu/ui/category/cubit/category_state.dart';
+import 'package:sanu/ui/core/extensions/context_extension.dart';
 import 'package:sanu/ui/item/models/item.dart';
 import 'package:sanu/ui/item/utils/items_utils.dart';
 
@@ -43,8 +44,10 @@ class _ItemSelectorHorizontalWidgetState extends State<ItemSelectorHorizontalWid
         final category = categoryState.categories[widget.item.categoryId];
         return BlocBuilder<TransactionCubit, TransactionState>(
           builder: (context, state) {
-            //final stocks = ItemsUtils.itemsInStock(context, itemId: widget.item.id);
+            final stocks = ItemsUtils.itemsInStock(context, itemId: widget.item.id);
             final isRemove = state.type == ItemTransactionType.remove;
+            final isOutOfStocks = stocks == Decimal.zero;
+
             return ListTile(
               title: Text(
                 widget.item.name,
@@ -61,6 +64,19 @@ class _ItemSelectorHorizontalWidgetState extends State<ItemSelectorHorizontalWid
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isOutOfStocks ? context.colorScheme.error : Colors.green,
+                      shape: BoxShape.circle,
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    stocks.toString(),
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
                   IconButton(
                     icon: const Icon(Icons.remove),
                     onPressed: () {
