@@ -54,9 +54,22 @@ class _ItemSelectorWidgetState extends State<ItemSelectorWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.item.name),
-                  Text(widget.item.price.toCurrencyFormat(context)),
-                  if (category != null) Text(category.name),
+                  Text(
+                    widget.item.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    widget.item.price.toCurrencyFormat(context),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (category != null)
+                    Text(
+                      category.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   const Spacer(),
                   Row(
                     children: [

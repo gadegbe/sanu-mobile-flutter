@@ -53,9 +53,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  child: const CategoriesSelectorWidget(),
+                const SizedBox(
+                  height: 125,
+                  child: CategoriesSelectorWidget(),
                 ),
                 const Divider(indent: 8),
                 if (!context.showCartWidget) const TransactionTypeSwitcherWidget(),
