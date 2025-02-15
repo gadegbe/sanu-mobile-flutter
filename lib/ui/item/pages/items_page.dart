@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:sanu/l10n/l10n.dart';
 import 'package:sanu/ui/category/cubit/category_cubit.dart';
+import 'package:sanu/ui/core/const.dart';
 import 'package:sanu/ui/core/extensions/context_extension.dart';
 import 'package:sanu/ui/core/extensions/context_layout_extension.dart';
 import 'package:sanu/ui/core/extensions/decimal_extension.dart';
@@ -75,7 +76,7 @@ class _ItemsPageState extends State<ItemsPage> {
                   icon: const Icon(Symbols.add),
                 ),
                 const Spacer(),
-                if (kDebugMode) ...[
+                if (AppConfig.isDebugModeActive) ...[
                   IconButton(
                     onPressed: () {
                       context.read<ItemCubit>().dropItemTable();

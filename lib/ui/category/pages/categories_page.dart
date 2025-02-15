@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -6,6 +5,7 @@ import 'package:sanu/l10n/l10n.dart';
 import 'package:sanu/ui/category/cubit/category_cubit.dart';
 import 'package:sanu/ui/category/cubit/category_state.dart';
 import 'package:sanu/ui/category/widgets/category_update_widget.dart';
+import 'package:sanu/ui/core/const.dart';
 import 'package:sanu/ui/core/extensions/context_layout_extension.dart';
 import 'package:sanu/ui/core/utils/crud_utils.dart';
 
@@ -64,7 +64,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   icon: const Icon(Symbols.add),
                 ),
                 const Spacer(),
-                if (kDebugMode) ...[
+                if (AppConfig.isDebugModeActive) ...[
                   IconButton(
                     onPressed: () {
                       context.read<CategoryCubit>().dropItemCategoryTable();

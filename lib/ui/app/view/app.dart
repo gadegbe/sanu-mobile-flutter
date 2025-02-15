@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sanu/l10n/l10n.dart';
 import 'package:sanu/ui/cart/cubit/transaction_cubit.dart';
 import 'package:sanu/ui/category/cubit/category_cubit.dart';
+import 'package:sanu/ui/core/const.dart';
 import 'package:sanu/ui/core/databases/database.dart';
 import 'package:sanu/ui/core/routers/router.dart';
 import 'package:sanu/ui/item/cubit/item_cubit.dart';
@@ -58,6 +59,7 @@ class App extends StatelessWidget {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: state.locales,
             locale: state.locale,
+            debugShowCheckedModeBanner: AppConfig.isDebugModeActive,
           );
         },
       ),

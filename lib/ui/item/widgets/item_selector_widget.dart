@@ -87,9 +87,9 @@ class _ItemSelectorWidgetState extends State<ItemSelectorWidget> {
                         style: const TextStyle(fontStyle: FontStyle.italic),
                       ),
                       const Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.remove),
-                        onPressed: () {
+                      InkWell(
+                        child: const Icon(Icons.remove),
+                        onTap: () {
                           quantityNotifier.value = quantityNotifier.value > Decimal.zero
                               ? quantityNotifier.value - Decimal.one
                               : Decimal.zero;
@@ -99,7 +99,7 @@ class _ItemSelectorWidgetState extends State<ItemSelectorWidget> {
                         valueListenable: quantityNotifier,
                         builder: (context, quantity, _) {
                           return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
                             child: Text(
                               quantity.toString(),
                               style: const TextStyle(fontWeight: FontWeight.bold),
@@ -107,9 +107,9 @@ class _ItemSelectorWidgetState extends State<ItemSelectorWidget> {
                           );
                         },
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.add),
-                        onPressed: () {
+                      InkWell(
+                        child: const Icon(Icons.add),
+                        onTap: () {
                           setState(() {
                             if (isRemove) {
                               quantityNotifier.value = quantityNotifier.value < maxQuantity

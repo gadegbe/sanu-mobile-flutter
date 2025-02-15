@@ -38,7 +38,9 @@ class _AppShellState extends State<AppShell> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            '${AppConfig.appName} Size(${context.mediaQuery.size.width} x ${context.mediaQuery.size.height})',
+            AppConfig.isDebugModeActive
+                ? '${AppConfig.appName} Size(${context.mediaQuery.size.width} x ${context.mediaQuery.size.height})'
+                : AppConfig.appName,
           ),
         ),
         floatingActionButton: context.showCartWidget || items[selectedIndex] != MenuItem.dashboard
