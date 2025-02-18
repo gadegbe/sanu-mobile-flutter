@@ -106,7 +106,7 @@ class _AppShellState extends State<AppShell> {
               Stack(
                 alignment: AlignmentDirectional.topCenter,
                 children: [
-                  const Expanded(child: VerticalDivider(thickness: 1, width: 1)),
+                  const VerticalDivider(thickness: 1, width: 1),
                   Container(
                     decoration: BoxDecoration(shape: BoxShape.circle, color: context.colorScheme.tertiaryContainer),
                     child: IconButton(
