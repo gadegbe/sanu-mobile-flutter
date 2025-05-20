@@ -50,6 +50,7 @@ class CartWidget extends StatelessWidget {
                     onPressed: () {
                       context.read<StockCubit>().commit(state.transactions.values.toList());
                       context.read<TransactionCubit>().reset();
+                      throw Exception('Firebase test');
                     },
                     child: Text(context.l10n.checkout),
                   ),
